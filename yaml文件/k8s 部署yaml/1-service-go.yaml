@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service1go
+  labels:
+    app: service1go
+    service: service1go
+spec:
+  ports:
+  - port: 80
+    name: http
+  selector:
+    app: service1go
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: service1go-account
+  labels:
+    account: service1go
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service1go-v1
+  labels:
+    app: service1go
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service1go
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: service1go
+        version: v1
+    spec:
+      serviceAccountName: service1go-account
+      containers:
+      - name: reviews
+        image: fyl253711/1servicego:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80

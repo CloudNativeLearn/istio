@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service2java
+  labels:
+    app: service2java
+    service: service2java
+spec:
+  ports:
+  - port: 8091
+    name: http
+  selector:
+    app: service2java
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: service2java-account
+  labels:
+    account: service2java
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service2java-v1
+  labels:
+    app: service2java
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service2java
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: service2java
+        version: v1
+    spec:
+      serviceAccountName: service2java-account
+      containers:
+      - name: reviews
+        image: fyl253711/2servicejava:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8091
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service2java-v2
+  labels:
+    app: service2java
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service2java
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: service2java
+        version: v2
+    spec:
+      serviceAccountName: service2java-account
+      containers:
+      - name: reviews
+        image: fyl253711/2servicejava:v2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8091

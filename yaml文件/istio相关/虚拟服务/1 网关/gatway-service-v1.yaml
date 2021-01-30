@@ -1,0 +1,61 @@
+##################################################################################################
+# 总微服务网关
+##################################################################################################
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: demoservice-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+##################################################################################################
+# 网关的虚拟服务 
+# 当路径为java 跳转java服务
+# 当路径为go 跳转go服务
+##################################################################################################
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: gatway-service
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - demoservice-gateway
+  http: 
+  - name: service2java
+    match:
+    - uri:
+        exact: /java
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        host: service2java
+        subset: v1
+        port:
+          number: 8091
+  - name: service3python
+    match:
+    - uri:
+        exact: /go
+    rewrite:
+      uri: "/"
+    route:
+    - destination:
+        host: service1go
+        subset: v1
+        port:
+          number: 80
+
+    
+        
+

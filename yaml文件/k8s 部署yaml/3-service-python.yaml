@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service3python
+  labels:
+    app: service3python
+    service: service3python
+spec:
+  ports:
+  - port: 7777
+    name: http
+  selector:
+    app: service3python
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: service3python-account
+  labels:
+    account: service3python
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service3python-v1
+  labels:
+    app: service3python
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service3python
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: service3python
+        version: v1
+    spec:
+      serviceAccountName: service3python-account
+      containers:
+      - name: reviews
+        image: fyl253711/3servicepython:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 7777
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service3python-v2
+  labels:
+    app: service3python
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service3python
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: service3python
+        version: v2
+    spec:
+      serviceAccountName: service3python-account
+      containers:
+      - name: reviews
+        image: fyl253711/3servicepython:v2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 7777

@@ -1,0 +1,44 @@
+##################################################################################################
+#  go虚拟服务
+##################################################################################################
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: service1go
+spec:
+  hosts:
+  - service1go
+  http:
+  - route:
+    - destination:
+        host: service1go
+---
+##################################################################################################
+#  java虚拟服务
+##################################################################################################
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: service2java
+spec:
+  hosts:
+  - service2java
+  http:
+  - route:
+    - destination:
+        host: service2java
+---
+##################################################################################################
+#  python虚拟服务
+##################################################################################################
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: service3python
+spec:
+  hosts:
+  - service3python
+  http:
+  - route:
+    - destination:
+        host: service3python

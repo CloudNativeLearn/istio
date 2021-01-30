@@ -1,0 +1,50 @@
+##################################################################################################
+#  java路由规则
+#  含有两个版本  v1  v2
+##################################################################################################
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: service2java
+spec:
+  host: service2java
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+---
+##################################################################################################
+#  python路由规则
+#  含有两个版本  v1  v2
+##################################################################################################
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: service3python
+spec:
+  host: service3python
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+---
+##################################################################################################
+#  go路由规则
+#  含有一个个版本  v1
+##################################################################################################
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: service1go
+spec:
+  host: service1go
+  subsets:
+  - name: v1
+    labels:
+      version: v1
